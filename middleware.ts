@@ -17,6 +17,6 @@ export default withAuth({
 export const config = {
   matcher: [
     // Match all paths except public ones and static assets
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:jpg|jpeg|png|gif|ico|svg|css|js)$|signin|api/auth).*)',
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:jpg|jpeg|png|gif|ico|svg|css|js)$|signin|api/auth|api/blogs).*)',
   ],
 } 
