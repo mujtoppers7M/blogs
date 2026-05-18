@@ -8,7 +8,7 @@ export default function AdminLayout({
   children: React.ReactNode
 }) {
   return (
-    <SidebarProvider defaultOpen={false}>
+    <SidebarProvider defaultOpen={true}>
       <div className="flex h-screen w-full overflow-hidden">
         <AdminSidebar />
         <SidebarInset className="flex flex-col w-full">
