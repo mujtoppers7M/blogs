@@ -53,7 +53,7 @@ export function AdminSidebar() {
   return (
     <Sidebar className="border-r">
       <SidebarHeader className="border-b border-border/40">
-        <div className="flex items-center gap-3 px-4 py-4">
+        <div className="flex items-center gap-2 px-2 py-3 sm:gap-3 sm:px-4 sm:py-4">
           <Image
             src="/logo.jpeg"
             alt="MUJ Toppers Logo"
@@ -61,9 +61,9 @@ export function AdminSidebar() {
             height={36}
             className="rounded-lg shadow-sm"
           />
-          <div className="flex flex-col">
-            <span className="font-bold text-lg">MUJ Toppers</span>
-            <span className="text-xs text-muted-foreground">Admin Panel</span>
+          <div className="flex flex-col min-w-0">
+            <span className="font-bold text-sm sm:text-lg truncate">MUJ Toppers</span>
+            <span className="text-xs text-muted-foreground truncate">Admin Panel</span>
           </div>
         </div>
       </SidebarHeader>

@@ -57,7 +57,7 @@ export default function SignIn() {
 
   return (
     <div className="container relative min-h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-      <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
+      <div className="relative hidden h-full flex-col bg-muted p-8 sm:p-10 text-white lg:flex dark:border-r">
         <div className="absolute inset-0">
           <Image
             src="/hello.png"
@@ -69,7 +69,7 @@ export default function SignIn() {
           />
           <div className="absolute inset-0 bg-black/60" />
         </div>
-        <div className="relative z-20 flex items-center justify-center text-lg font-medium gap-2">
+        <div className="relative z-20 flex items-center justify-center text-base sm:text-lg font-medium gap-2">
           <Image
             src="/logo.jpeg"
             alt="MUJ Toppers Logo"
@@ -78,18 +78,18 @@ export default function SignIn() {
             style={{ borderRadius: '50%' }}
             priority
           />
-          MUJ Toppers Admin
+          <span className="hidden sm:inline">MUJ Toppers Admin</span>
         </div>
         <div className="relative z-20 mt-auto">
           <blockquote className="space-y-2">
-            <p className="text-lg">
+            <p className="text-base sm:text-lg">
               &ldquo;Empowering students with knowledge and opportunities for a brighter future.&rdquo;
             </p>
-            <footer className="text-sm">MUJ Toppers Team</footer>
+            <footer className="text-xs sm:text-sm">MUJ Toppers Team</footer>
           </blockquote>
         </div>
       </div>
-      <div className="lg:p-8">
+      <div className="w-full px-4 py-8 sm:px-0 lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
             <div className="flex justify-center">
@@ -101,17 +101,17 @@ export default function SignIn() {
                 priority
               />
             </div>
-            <h1 className="text-2xl font-semibold tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-semibold tracking-tight">
               Welcome back
             </h1>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               Enter your credentials to sign in to your account
             </p>
           </div>
           <Card>
             <CardHeader>
-              <CardTitle>Sign In</CardTitle>
-              <CardDescription>
+              <CardTitle className="text-lg">Sign In</CardTitle>
+              <CardDescription className="text-xs sm:text-sm">
                 Enter your email and password to access your account
               </CardDescription>
             </CardHeader>
@@ -119,7 +119,7 @@ export default function SignIn() {
               <form onSubmit={handleSubmit}>
                 <div className="grid gap-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email" className="text-xs sm:text-sm">Email</Label>
                     <Input
                       id="email"
                       name="email"
@@ -127,10 +127,11 @@ export default function SignIn() {
                       placeholder="name@example.com"
                       required
                       disabled={isLoading}
+                      className="text-sm"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="password">Password</Label>
+                    <Label htmlFor="password" className="text-xs sm:text-sm">Password</Label>
                     <div className="relative">
                       <Input
                         id="password"
@@ -138,6 +139,7 @@ export default function SignIn() {
                         type={showPassword ? "text" : "password"}
                         required
                         disabled={isLoading}
+                        className="text-sm"
                       />
                       <Button
                         type="button"
@@ -158,11 +160,11 @@ export default function SignIn() {
                     </div>
                   </div>
                   {error && (
-                    <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+                    <div className="rounded-md bg-destructive/15 p-3 text-xs sm:text-sm text-destructive">
                       {error}
                     </div>
                   )}
-                  <Button type="submit" disabled={isLoading}>
+                  <Button type="submit" disabled={isLoading} size="sm" className="text-sm">
                     Sign In
                   </Button>
                 </div>

@@ -62,17 +62,17 @@ export function AddInternshipForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid gap-6 sm:grid-cols-2">
+        <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2">
           <FormField
             control={form.control}
             name="companyName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Company Name</FormLabel>
+                <FormLabel className="text-sm">Company Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Google, Microsoft, etc." {...field} />
+                  <Input placeholder="Google, Microsoft, etc." {...field} className="text-sm" />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-xs" />
               </FormItem>
             )}
           />
@@ -82,10 +82,10 @@ export function AddInternshipForm() {
             name="mode"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Work Mode</FormLabel>
+                <FormLabel className="text-sm">Work Mode</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger className="text-sm">
                       <SelectValue placeholder="Select work mode" />
                     </SelectTrigger>
                   </FormControl>
@@ -95,23 +95,23 @@ export function AddInternshipForm() {
                     <SelectItem value="on-site">On-site</SelectItem>
                   </SelectContent>
                 </Select>
-                <FormMessage />
+                <FormMessage className="text-xs" />
               </FormItem>
             )}
           />
         </div>
         
-        <div className="grid gap-6 sm:grid-cols-2">
+        <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2">
           <FormField
             control={form.control}
             name="stipendMin"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Minimum Stipend (₹)</FormLabel>
+                <FormLabel className="text-sm">Minimum Stipend (₹)</FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder="10000" {...field} />
+                  <Input type="number" placeholder="10000" {...field} className="text-sm" />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-xs" />
               </FormItem>
             )}
           />
@@ -121,11 +121,11 @@ export function AddInternshipForm() {
             name="stipendMax"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Maximum Stipend (₹)</FormLabel>
+                <FormLabel className="text-sm">Maximum Stipend (₹)</FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder="50000" {...field} />
+                  <Input type="number" placeholder="50000" {...field} className="text-sm" />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-xs" />
               </FormItem>
             )}
           />
@@ -136,12 +136,12 @@ export function AddInternshipForm() {
           name="url"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Internship URL</FormLabel>
+              <FormLabel className="text-sm">Internship URL</FormLabel>
               <FormControl>
-                <Input placeholder="https://company.com/careers/internship" {...field} />
+                <Input placeholder="https://company.com/careers/internship" {...field} className="text-sm" />
               </FormControl>
-              <FormDescription>Link to the company's internship application page</FormDescription>
-              <FormMessage />
+              <FormDescription className="text-xs">Link to the company's internship application page</FormDescription>
+              <FormMessage className="text-xs" />
             </FormItem>
           )}
         />

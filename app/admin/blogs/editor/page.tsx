@@ -254,45 +254,46 @@ export default function BlogCreationPage() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      <div className="max-w-4xl mx-auto p-6">
+      <div className="max-w-4xl mx-auto p-3 sm:p-4 md:p-6">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <Button variant="ghost" className="text-gray-600 hover:text-gray-900" onClick={() => router.push("/admin/blogs")}>
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Blogs
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 md:mb-8">
+          <Button variant="ghost" className="text-gray-600 hover:text-gray-900 justify-start sm:justify-start" onClick={() => router.push("/admin/blogs")}>
+            <ArrowLeft className="w-4 h-4 mr-2 flex-shrink-0" />
+            <span className="truncate">Back to Blogs</span>
           </Button>
           <Button 
-            className="bg-gray-900 text-white hover:bg-gray-700"
+            className="bg-gray-900 text-white hover:bg-gray-700 w-full sm:w-auto"
             onClick={handleCreateBlog}
             disabled={publishBlog.isLoading}
+            size="sm"
           >
             {publishBlog.isLoading ? (
               "Creating..."
             ) : (
               <>
-                <Send className="w-4 h-4 mr-2" />
-                Create Blog
+                <Send className="w-4 h-4 mr-2 flex-shrink-0" />
+                <span>Create Blog</span>
               </>
             )}
           </Button>
         </div>
 
         {/* Title */}
-        <div className="mb-6">
+        <div className="mb-4 md:mb-6">
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Title"
-            className="border-0 border-b border-gray-200 rounded-none px-0 text-3xl font-bold placeholder:text-gray-300 focus-visible:ring-0 focus-visible:border-gray-400"
+            className="border-0 border-b border-gray-200 rounded-none px-0 text-xl sm:text-2xl md:text-3xl font-bold placeholder:text-gray-300 focus-visible:ring-0 focus-visible:border-gray-400"
           />
         </div>
 
         {/* Category and Tags */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-2">Category</label>
+            <label className="block text-xs sm:text-sm font-medium text-gray-600 mb-2">Category</label>
             <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger className="border-gray-200">
+              <SelectTrigger className="border-gray-200 text-sm">
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
@@ -306,23 +307,23 @@ export default function BlogCreationPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-2">Tags</label>
+            <label className="block text-xs sm:text-sm font-medium text-gray-600 mb-2">Tags</label>
             <div className="flex gap-2">
               <Input
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Add a tag"
-                className="border-gray-200"
+                className="border-gray-200 text-sm"
               />
-              <Button onClick={addTag} variant="outline" className="border-gray-200">
+              <Button onClick={addTag} variant="outline" className="border-gray-200 text-xs sm:text-sm px-3">
                 Add
               </Button>
             </div>
             {tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-3">
                 {tags.map((tag, index) => (
-                  <Badge key={index} variant="secondary" className="bg-gray-100 text-gray-700 hover:bg-gray-200">
+                  <Badge key={index} variant="secondary" className="bg-gray-100 text-gray-700 hover:bg-gray-200 text-xs">
                     {tag}
                     <X className="w-3 h-3 ml-1 cursor-pointer" onClick={() => removeTag(tag)} />
                   </Badge>
@@ -332,17 +333,16 @@ export default function BlogCreationPage() {
           </div>
         </div>
 
-        {/* Editor Toolbar */}
-        <div className="bg-gray-50 rounded-t-lg border border-gray-200 border-b-0">
-          <div className="flex items-center gap-1 p-2 flex-wrap">
+        {/* Editor Toolbar - Scrollable on Mobile */}
+        <div className="bg-gray-50 rounded-t-lg border border-gray-200 border-b-0 overflow-x-auto">
+          <div className="flex items-center gap-0.5 p-2 flex-nowrap min-w-max md:flex-wrap md:min-w-0">
             {/* Text Formatting */}
             <Button
               variant="ghost"
               size="sm"
               onClick={() => formatText("bold")}
-              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 ${
-                activeStates.bold ? "bg-gray-200 text-gray-900" : ""
-              }`}
+              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 flex-shrink-0 h-8 w-8 p-0 ${activeStates.bold ? "bg-gray-200 text-gray-900" : ""}`}
+              title="Bold"
             >
               <Bold className="w-4 h-4" />
             </Button>
@@ -350,9 +350,8 @@ export default function BlogCreationPage() {
               variant="ghost"
               size="sm"
               onClick={() => formatText("italic")}
-              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 ${
-                activeStates.italic ? "bg-gray-200 text-gray-900" : ""
-              }`}
+              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 flex-shrink-0 h-8 w-8 p-0 ${activeStates.italic ? "bg-gray-200 text-gray-900" : ""}`}
+              title="Italic"
             >
               <Italic className="w-4 h-4" />
             </Button>
@@ -360,9 +359,8 @@ export default function BlogCreationPage() {
               variant="ghost"
               size="sm"
               onClick={() => formatText("underline")}
-              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 ${
-                activeStates.underline ? "bg-gray-200 text-gray-900" : ""
-              }`}
+              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 flex-shrink-0 h-8 w-8 p-0 ${activeStates.underline ? "bg-gray-200 text-gray-900" : ""}`}
+              title="Underline"
             >
               <Underline className="w-4 h-4" />
             </Button>
@@ -370,23 +368,21 @@ export default function BlogCreationPage() {
               variant="ghost"
               size="sm"
               onClick={() => formatText("strikethrough")}
-              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 ${
-                activeStates.strikethrough ? "bg-gray-200 text-gray-900" : ""
-              }`}
+              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 flex-shrink-0 h-8 w-8 p-0 ${activeStates.strikethrough ? "bg-gray-200 text-gray-900" : ""}`}
+              title="Strikethrough"
             >
               <Strikethrough className="w-4 h-4" />
             </Button>
 
-            <Separator orientation="vertical" className="h-6 bg-gray-300 mx-1" />
+            <Separator orientation="vertical" className="h-6 bg-gray-300 mx-0.5 flex-shrink-0" />
 
             {/* Headings */}
             <Button
               variant="ghost"
               size="sm"
               onClick={() => formatText("h1")}
-              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 ${
-                activeStates.h1 ? "bg-gray-200 text-gray-900" : ""
-              }`}
+              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 flex-shrink-0 h-8 w-8 p-0 ${activeStates.h1 ? "bg-gray-200 text-gray-900" : ""}`}
+              title="Heading 1"
             >
               <Heading1 className="w-4 h-4" />
             </Button>
@@ -394,23 +390,21 @@ export default function BlogCreationPage() {
               variant="ghost"
               size="sm"
               onClick={() => formatText("h2")}
-              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 ${
-                activeStates.h2 ? "bg-gray-200 text-gray-900" : ""
-              }`}
+              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 flex-shrink-0 h-8 w-8 p-0 ${activeStates.h2 ? "bg-gray-200 text-gray-900" : ""}`}
+              title="Heading 2"
             >
               <Heading2 className="w-4 h-4" />
             </Button>
 
-            <Separator orientation="vertical" className="h-6 bg-gray-300 mx-1" />
+            <Separator orientation="vertical" className="h-6 bg-gray-300 mx-0.5 flex-shrink-0" />
 
             {/* Lists */}
             <Button
               variant="ghost"
               size="sm"
               onClick={() => formatText("ul")}
-              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 ${
-                activeStates.ul ? "bg-gray-200 text-gray-900" : ""
-              }`}
+              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 flex-shrink-0 h-8 w-8 p-0 ${activeStates.ul ? "bg-gray-200 text-gray-900" : ""}`}
+              title="Unordered List"
             >
               <List className="w-4 h-4" />
             </Button>
@@ -418,9 +412,8 @@ export default function BlogCreationPage() {
               variant="ghost"
               size="sm"
               onClick={() => formatText("ol")}
-              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 ${
-                activeStates.ol ? "bg-gray-200 text-gray-900" : ""
-              }`}
+              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 flex-shrink-0 h-8 w-8 p-0 ${activeStates.ol ? "bg-gray-200 text-gray-900" : ""}`}
+              title="Ordered List"
             >
               <ListOrdered className="w-4 h-4" />
             </Button>
@@ -428,23 +421,21 @@ export default function BlogCreationPage() {
               variant="ghost"
               size="sm"
               onClick={() => formatText("quote")}
-              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 ${
-                activeStates.quote ? "bg-gray-200 text-gray-900" : ""
-              }`}
+              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 flex-shrink-0 h-8 w-8 p-0 ${activeStates.quote ? "bg-gray-200 text-gray-900" : ""}`}
+              title="Quote"
             >
               <Quote className="w-4 h-4" />
             </Button>
 
-            <Separator orientation="vertical" className="h-6 bg-gray-300 mx-1" />
+            <Separator orientation="vertical" className="h-6 bg-gray-300 mx-0.5 flex-shrink-0" />
 
             {/* Alignment */}
             <Button
               variant="ghost"
               size="sm"
               onClick={() => formatText("justifyLeft")}
-              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 ${
-                activeStates.justifyLeft ? "bg-gray-200 text-gray-900" : ""
-              }`}
+              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 flex-shrink-0 h-8 w-8 p-0 ${activeStates.justifyLeft ? "bg-gray-200 text-gray-900" : ""}`}
+              title="Align Left"
             >
               <AlignLeft className="w-4 h-4" />
             </Button>
@@ -452,9 +443,8 @@ export default function BlogCreationPage() {
               variant="ghost"
               size="sm"
               onClick={() => formatText("justifyCenter")}
-              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 ${
-                activeStates.justifyCenter ? "bg-gray-200 text-gray-900" : ""
-              }`}
+              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 flex-shrink-0 h-8 w-8 p-0 ${activeStates.justifyCenter ? "bg-gray-200 text-gray-900" : ""}`}
+              title="Align Center"
             >
               <AlignCenter className="w-4 h-4" />
             </Button>
@@ -462,19 +452,18 @@ export default function BlogCreationPage() {
               variant="ghost"
               size="sm"
               onClick={() => formatText("justifyRight")}
-              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 ${
-                activeStates.justifyRight ? "bg-gray-200 text-gray-900" : ""
-              }`}
+              className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 flex-shrink-0 h-8 w-8 p-0 ${activeStates.justifyRight ? "bg-gray-200 text-gray-900" : ""}`}
+              title="Align Right"
             >
               <AlignRight className="w-4 h-4" />
             </Button>
 
-            <Separator orientation="vertical" className="h-6 bg-gray-300 mx-1" />
+            <Separator orientation="vertical" className="h-6 bg-gray-300 mx-0.5 flex-shrink-0" />
 
             {/* Link */}
             <Popover open={showLinkPopover} onOpenChange={setShowLinkPopover}>
               <PopoverTrigger asChild>
-                <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 flex-shrink-0 h-8 w-8 p-0" title="Insert Link">
                   <Link className="w-4 h-4" />
                 </Button>
               </PopoverTrigger>
@@ -485,6 +474,7 @@ export default function BlogCreationPage() {
                     value={linkUrl}
                     onChange={(e) => setLinkUrl(e.target.value)}
                     onKeyPress={(e) => e.key === "Enter" && insertLink()}
+                    className="text-sm"
                   />
                   <Button onClick={insertLink} size="sm">
                     Add
@@ -496,7 +486,7 @@ export default function BlogCreationPage() {
             {/* Color */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 flex-shrink-0 h-8 w-8 p-0" title="Text Color">
                   <Palette className="w-4 h-4" />
                 </Button>
               </PopoverTrigger>
@@ -519,7 +509,8 @@ export default function BlogCreationPage() {
               variant="ghost"
               size="sm"
               onClick={() => formatText("code")}
-              className="text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+              className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 flex-shrink-0 h-8 w-8 p-0"
+              title="Code"
             >
               <Code className="w-4 h-4" />
             </Button>
@@ -527,22 +518,23 @@ export default function BlogCreationPage() {
               variant="ghost"
               size="sm"
               onClick={() => formatText("hr")}
-              className="text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+              className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 flex-shrink-0 h-8 w-8 p-0"
+              title="Horizontal Line"
             >
               <Minus className="w-4 h-4" />
             </Button>
-            <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+            <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 flex-shrink-0 h-8 w-8 p-0" title="Insert Image">
               <ImageIcon className="w-4 h-4" />
             </Button>
           </div>
         </div>
 
         {/* Content Area - WYSIWYG Editor */}
-        <div className="bg-white rounded-b-lg border border-gray-200 min-h-[400px]">
+        <div className="bg-white rounded-b-lg border border-gray-200 min-h-[300px] sm:min-h-[400px]">
           <div
             ref={editorRef}
             contentEditable
-            className="p-4 min-h-[400px] focus:outline-none prose max-w-none"
+            className="p-3 sm:p-4 min-h-[300px] sm:min-h-[400px] focus:outline-none prose prose-sm sm:prose max-w-none text-sm sm:text-base"
             onFocus={(e) => {
               if (e.currentTarget.textContent === "") {
                 e.currentTarget.dataset.empty = "true"

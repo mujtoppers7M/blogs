@@ -25,19 +25,19 @@ export default function BlogsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black p-8">
+    <div className="min-h-screen bg-white dark:bg-black p-4 sm:p-6 md:p-8">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Blogs</h1>
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6 md:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold">Blogs</h1>
           <Link href="/admin/blogs/editor">
-            <Button className="rounded-full">
+            <Button className="rounded-full w-full sm:w-auto">
               <Plus className="mr-2 h-4 w-4" />
-              New Blog
+              <span>New Blog</span>
             </Button>
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {isLoading ? (
             // Loading skeletons
             Array.from({ length: 6 }).map((_, index) => (
