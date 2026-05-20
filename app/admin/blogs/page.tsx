@@ -4,12 +4,36 @@ import { useBlogs } from "@/hooks/useBlogs"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Plus } from "lucide-react"
+import { Plus, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { Skeleton } from "@/components/ui/skeleton"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { useDeleteBlog } from "@/hooks/useDeleteBlog"
+import { useState } from "react"
 
 export default function BlogsPage() {
   const { data: blogs, isLoading, error } = useBlogs()
+  const deleteBlog = useDeleteBlog()
+  const [deletingBlogId, setDeletingBlogId] = useState<string | null>(null)
+
+  const handleDelete = async (blogId: string) => {
+    setDeletingBlogId(blogId)
+    try {
+      await deleteBlog.mutateAsync(blogId)
+    } finally {
+      setDeletingBlogId(null)
+    }
+  }
 
   if (error instanceof Error) {
     return (
@@ -79,10 +103,39 @@ export default function BlogsPage() {
                     ))}
                   </div>
                 </CardContent>
-                <CardFooter>
+                <CardFooter className="flex items-center justify-between gap-2">
                   <Link href={`/admin/blogs/${blog.id}`}>
                     <Button variant="outline">Read More</Button>
                   </Link>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        disabled={deleteBlog.isPending}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                        {deletingBlogId === blog.id ? "Deleting..." : "Delete"}
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Delete this blog?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently delete the blog post.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleDelete(blog.id)}
+                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        >
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </CardFooter>
               </Card>
             ))
