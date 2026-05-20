@@ -32,6 +32,8 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { usePublishBlog } from "@/hooks/usePublishBlog"
+import { useUpdateBlog } from "@/hooks/useUpdateBlog"
+import { useSearchParams } from "next/navigation"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
@@ -53,6 +55,9 @@ interface ActiveStates {
 export default function BlogCreationPage() {
   const router = useRouter()
   const publishBlog = usePublishBlog()
+  const updateBlog = useUpdateBlog()
+  const searchParams = useSearchParams()
+  const editingId = searchParams?.get('id')
   const [title, setTitle] = useState("")
   const [category, setCategory] = useState("")
   const [tags, setTags] = useState<string[]>([])
@@ -232,6 +237,27 @@ export default function BlogCreationPage() {
     }
   }, [updateActiveStates])
 
+  // Load blog data when editing
+  useEffect(() => {
+    if (!editingId) return
+
+    const load = async () => {
+      try {
+        const res = await fetch(`/api/blogs/${editingId}`)
+        if (!res.ok) throw new Error('Failed to load blog')
+        const data = await res.json()
+        setTitle(data.title)
+        setCategory(data.category)
+        setTags(data.tags || [])
+        if (editorRef.current) editorRef.current.innerHTML = data.content
+      } catch (e) {
+        toast.error('Failed to load blog for editing')
+      }
+    }
+
+    load()
+  }, [editingId])
+
   const handleCreateBlog = async () => {
     if (!title || !category || !editorRef.current?.innerHTML) {
       toast.error("Please fill in all required fields")
@@ -239,16 +265,26 @@ export default function BlogCreationPage() {
     }
 
     try {
-      await publishBlog.mutateAsync({
-        title,
-        content: editorRef.current.innerHTML,
-        category,
-        tags,
-      })
-      
+      if (editingId) {
+        await updateBlog.mutateAsync({
+          id: editingId,
+          title,
+          content: editorRef.current.innerHTML,
+          category,
+          tags,
+        })
+      } else {
+        await publishBlog.mutateAsync({
+          title,
+          content: editorRef.current.innerHTML,
+          category,
+          tags,
+        })
+      }
+
       router.push("/admin/blogs")
     } catch (error) {
-      // Error is handled by the hook
+      // handled by hooks
     }
   }
 
@@ -264,15 +300,15 @@ export default function BlogCreationPage() {
           <Button 
             className="bg-gray-900 text-white hover:bg-gray-700 w-full sm:w-auto"
             onClick={handleCreateBlog}
-            disabled={publishBlog.isLoading}
+            disabled={publishBlog.isLoading || updateBlog.isLoading}
             size="sm"
           >
-            {publishBlog.isLoading ? (
-              "Creating..."
+            {publishBlog.isLoading || updateBlog.isLoading ? (
+              editingId ? 'Updating...' : 'Saving...'
             ) : (
               <>
                 <Send className="w-4 h-4 mr-2 flex-shrink-0" />
-                <span>Create Blog</span>
+                <span>{editingId ? 'Update Blog' : 'Create Blog'}</span>
               </>
             )}
           </Button>
@@ -298,10 +334,18 @@ export default function BlogCreationPage() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="technology">Technology</SelectItem>
+                <SelectItem value="programming">Programming</SelectItem>
+                <SelectItem value="tutorials">Tutorials</SelectItem>
                 <SelectItem value="design">Design</SelectItem>
                 <SelectItem value="business">Business</SelectItem>
+                <SelectItem value="career">Career</SelectItem>
                 <SelectItem value="lifestyle">Lifestyle</SelectItem>
                 <SelectItem value="travel">Travel</SelectItem>
+                <SelectItem value="news">News</SelectItem>
+                <SelectItem value="education">Education</SelectItem>
+                <SelectItem value="health">Health</SelectItem>
+                <SelectItem value="science">Science</SelectItem>
+                <SelectItem value="opinion">Opinion</SelectItem>
               </SelectContent>
             </Select>
           </div>

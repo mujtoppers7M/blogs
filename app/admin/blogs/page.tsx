@@ -104,9 +104,14 @@ export default function BlogsPage() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex items-center justify-between gap-2">
-                  <Link href={`/admin/blogs/${blog.id}`}>
-                    <Button variant="outline">Read More</Button>
-                  </Link>
+                  <div className="flex items-center gap-2">
+                    <Link href={`/admin/blogs/${blog.id}`}>
+                      <Button variant="outline">Read More</Button>
+                    </Link>
+                    <Link href={`/admin/blogs/editor?id=${blog.id}`}>
+                      <Button variant="secondary" size="sm">Edit</Button>
+                    </Link>
+                  </div>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button

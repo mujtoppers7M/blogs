@@ -62,3 +62,75 @@ export async function DELETE(
     )
   }
 }
+
+// GET /api/blogs/:id - return single blog
+export async function GET(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params
+
+    const blog = await prisma.blog.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        category: true,
+        tags: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    })
+
+    if (!blog) {
+      return NextResponse.json({ error: 'Blog not found' }, { status: 404, headers: corsHeaders })
+    }
+
+    return NextResponse.json(blog, { headers: corsHeaders })
+  } catch (error) {
+    console.error('Error fetching blog:', error)
+    return NextResponse.json({ error: 'Failed to fetch blog' }, { status: 500, headers: corsHeaders })
+  }
+}
+
+// PUT /api/blogs/:id - update a blog
+export async function PUT(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params
+    const body = await request.json()
+    const { title, content, category, tags } = body
+
+    if (!title || !content || !category) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400, headers: corsHeaders })
+    }
+
+    const updated = await prisma.blog.update({
+      where: { id },
+      data: {
+        title,
+        content,
+        category,
+        tags: tags || [],
+      },
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        category: true,
+        tags: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    })
+
+    return NextResponse.json(updated, { headers: corsHeaders })
+  } catch (error) {
+    console.error('Error updating blog:', error)
+    return NextResponse.json({ error: 'Failed to update blog' }, { status: 500, headers: corsHeaders })
+  }
+}
