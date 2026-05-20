@@ -33,7 +33,6 @@ import { Separator } from "@/components/ui/separator"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { usePublishBlog } from "@/hooks/usePublishBlog"
 import { useUpdateBlog } from "@/hooks/useUpdateBlog"
-import { useSearchParams } from "next/navigation"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
@@ -56,8 +55,14 @@ export default function BlogCreationPage() {
   const router = useRouter()
   const publishBlog = usePublishBlog()
   const updateBlog = useUpdateBlog()
-  const searchParams = useSearchParams()
-  const editingId = searchParams?.get('id')
+  const [editingId, setEditingId] = useState<string | null>(null)
+
+  useEffect(() => {
+    // Read the id from the browser URL on the client to avoid prerender/suspense issues
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams(window.location.search)
+    setEditingId(params.get('id'))
+  }, [])
   const [title, setTitle] = useState("")
   const [category, setCategory] = useState("")
   const [tags, setTags] = useState<string[]>([])
